@@ -51,44 +51,6 @@ void AnimationSpritePlayground::InitScene(float windowWidth, float windowHeight)
 		ECS::GetComponent<Transform>(entity).SetPosition(vec3(0.f, 0.f, 0.f));
 	}
 
-	//Set up Link
-	{
-		auto entity = ECS::CreateEntity();
-		ECS::SetIsMainPlayer(entity, true);
-
-		ECS::AttachComponent<Player>(entity);
-		ECS::AttachComponent<Sprite>(entity);
-		ECS::AttachComponent<Transform>(entity);
-		ECS::AttachComponent<AnimationController>(entity);
-		ECS::AttachComponent<PhysicsBody>(entity);
-
-		//Set up components
-		std::string fileName = "spritesheets/Link.png";
-		std::string animations = "linkAnimations.json";
-
-		ECS::GetComponent<Player>(entity).InitPlayer(fileName, animations, 20, 30, &ECS::GetComponent<Sprite>(entity), &ECS::GetComponent<AnimationController>(entity), &ECS::GetComponent<Transform>(entity));
-
-		ECS::GetComponent<Transform>(entity).SetPosition(vec3(0.f, 0.f, 2.f));
-
-		auto& tempSpr = ECS::GetComponent<Sprite>(entity);
-		auto& tempPhsBody = ECS::GetComponent<PhysicsBody>(entity);
-
-		float shrinkX = 0.f;
-		float shrinkY = 0.f;
-
-		b2Body* tempBody;
-		b2BodyDef tempDef;
-		tempDef.type = b2_dynamicBody;
-		tempDef.position.Set(float32(0.f), float32(30.f));
-
-		tempBody = m_physicsWorld->CreateBody(&tempDef);
-
-		tempPhsBody = PhysicsBody(tempBody, float(tempSpr.GetWidth() - shrinkX), float(tempSpr.GetHeight() - shrinkY), vec2(0.f, 0.f), false);
-
-		ECS::GetComponent<PhysicsBody>(MainEntities::MainPlayer()).GetBody()->SetFixedRotation(true);
-
-	}
-
 	//Set up dynamic box
 	{
 		//Creates entity
@@ -150,6 +112,44 @@ void AnimationSpritePlayground::InitScene(float windowWidth, float windowHeight)
 		tempPhsBody = PhysicsBody(tempBody, float(tempSpr.GetWidth() - shrinkX), float(tempSpr.GetHeight() - shrinkY), vec2(0.f, 0.f), false);
 	}
 
+	//Set up Link
+	{
+		auto entity = ECS::CreateEntity();
+		ECS::SetIsMainPlayer(entity, true);
+
+		ECS::AttachComponent<Player>(entity);
+		ECS::AttachComponent<Sprite>(entity);
+		ECS::AttachComponent<Transform>(entity);
+		ECS::AttachComponent<AnimationController>(entity);
+		ECS::AttachComponent<PhysicsBody>(entity);
+
+		//Set up components
+		std::string fileName = "spritesheets/Link.png";
+		std::string animations = "linkAnimations.json";
+
+		ECS::GetComponent<Player>(entity).InitPlayer(fileName, animations, 20, 30, &ECS::GetComponent<Sprite>(entity), &ECS::GetComponent<AnimationController>(entity), &ECS::GetComponent<Transform>(entity), true, &ECS::GetComponent<PhysicsBody>(entity));
+
+		ECS::GetComponent<Transform>(entity).SetPosition(vec3(0.f, 0.f, 2.f));
+
+		auto& tempSpr = ECS::GetComponent<Sprite>(entity);
+		auto& tempPhsBody = ECS::GetComponent<PhysicsBody>(entity);
+
+		float shrinkX = 0.f;
+		float shrinkY = 0.f;
+
+		b2Body* tempBody;
+		b2BodyDef tempDef;
+		tempDef.type = b2_dynamicBody;
+		tempDef.position.Set(float32(0.f), float32(30.f));
+
+		tempBody = m_physicsWorld->CreateBody(&tempDef);
+
+		tempPhsBody = PhysicsBody(tempBody, float(tempSpr.GetWidth() - shrinkX), float(tempSpr.GetHeight() - shrinkY), vec2(0.f, 0.f), false);
+
+		ECS::GetComponent<PhysicsBody>(MainEntities::MainPlayer()).GetBody()->SetFixedRotation(true);
+
+	}
+
 	ECS::GetComponent<HorizontalScroll>(MainEntities::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(MainEntities::MainPlayer()));
 	ECS::GetComponent <VerticalScroll> (MainEntities::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(MainEntities::MainPlayer()));
 
@@ -164,7 +164,7 @@ void AnimationSpritePlayground::Update()
 
 void AnimationSpritePlayground::KeyboardHold()
 {
-	auto& player = ECS::GetComponent<PhysicsBody>(MainEntities::MainPlayer());
+	/*auto& player = ECS::GetComponent<PhysicsBody>(MainEntities::MainPlayer());
 	float speed = 60.f;
 	b2Vec2 vel = b2Vec2(0.f, 0.f);
 
@@ -173,10 +173,10 @@ void AnimationSpritePlayground::KeyboardHold()
 		speed *= 2.f;
 	}
 
-	/*if (Input::GetKey(Key::W))
+	if (Input::GetKey(Key::W))
 	{
 		vel += b2Vec2(0.f, 1.f);
-	}*/
+	}
 	if (Input::GetKey(Key::S))
 	{
 		vel += b2Vec2(0.f, -1.f);
@@ -192,7 +192,7 @@ void AnimationSpritePlayground::KeyboardHold()
 	}
 
 	b2Vec2 newVe1 = b2Vec2(speed * vel.x, player.GetBody()->GetLinearVelocity().y);
-	player.GetBody()->SetLinearVelocity(speed * vel);
+	player.GetBody()->SetLinearVelocity(speed * vel);*/
 }
 
 void AnimationSpritePlayground::KeyboardDown()
@@ -202,14 +202,4 @@ void AnimationSpritePlayground::KeyboardDown()
 
 void AnimationSpritePlayground::KeyboardUp()
 {
-	auto& player = ECS::GetComponent<PhysicsBody>(MainEntities::MainPlayer());
-	float speed = 60.f;
-	b2Vec2 vel = b2Vec2(0.f, 100.f);
-
-	if (Input::GetKey(Key::W))
-	{
-		vel += b2Vec2(0.f, 100.f);
-	}
-
-		player.GetBody()->SetLinearVelocity(speed* vel);
 }
