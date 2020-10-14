@@ -39,7 +39,7 @@ void AnimationSpritePlayground::InitScene(float windowWidth, float windowHeight)
 	}
 	
 	//Set up hello world 
-	{
+	/*{
 		auto entity = ECS::CreateEntity();
 
 		ECS::AttachComponent<Sprite>(entity);
@@ -49,7 +49,7 @@ void AnimationSpritePlayground::InitScene(float windowWidth, float windowHeight)
 		ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 100, 60);
 		ECS::GetComponent<Sprite>(entity).SetTransparency(0.8f);
 		ECS::GetComponent<Transform>(entity).SetPosition(vec3(0.f, 0.f, 0.f));
-	}
+	}*/
 
 	//Set up dynamic box
 	{
@@ -82,6 +82,80 @@ void AnimationSpritePlayground::InitScene(float windowWidth, float windowHeight)
 		tempPhsBody = PhysicsBody(tempBody, float(tempSpr.GetWidth() - shrinkX), float(tempSpr.GetHeight() - shrinkY), vec2(0.f, 0.f), false);
 	}
 
+	//Set up background
+
+	{
+		//Create entity
+		auto entity = ECS::CreateEntity();
+
+		//Add components
+		ECS::AttachComponent<Sprite>(entity);
+		ECS::AttachComponent<Transform>(entity);
+
+		//Set up component
+		std::string fileName = "Background.jpg";
+		ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 426, 240);
+		ECS::GetComponent<Transform>(entity).SetPosition(vec3(30.f, 50.f, 0.f));
+	}
+
+	//Set up barrier on left
+	{
+		auto entity = ECS::CreateEntity();
+
+		//Add compnents
+		ECS::AttachComponent<Sprite>(entity);
+		ECS::AttachComponent<Transform>(entity);
+		ECS::AttachComponent<PhysicsBody>(entity);
+
+		//Set up components
+		std::string fileName = "";
+		ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 20, 426);
+		ECS::GetComponent<Transform>(entity).SetPosition(vec3(30.f, -10.f, 2.f));
+
+		auto& tempSpr = ECS::GetComponent<Sprite>(entity);
+		auto& tempPhsBody = ECS::GetComponent<PhysicsBody>(entity);
+
+		float shrinkX = 0.f;
+		float shrinkY = 0.f;
+		b2Body* tempBody;
+		b2BodyDef tempDef;
+		tempDef.type = b2_staticBody;
+		tempDef.position.Set(float32(-175.f), float32(-10.f));
+
+		tempBody = m_physicsWorld->CreateBody(&tempDef);
+
+		tempPhsBody = PhysicsBody(tempBody, float(tempSpr.GetWidth() - shrinkX), float(tempSpr.GetHeight() - shrinkY), vec2(0.f, 0.f), false);
+	}
+	
+	//Set up barrier on right
+	{
+		auto entity = ECS::CreateEntity();
+
+		//Add compnents
+		ECS::AttachComponent<Sprite>(entity);
+		ECS::AttachComponent<Transform>(entity);
+		ECS::AttachComponent<PhysicsBody>(entity);
+
+		//Set up components
+		std::string fileName = "";
+		ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 20, 426);
+		ECS::GetComponent<Transform>(entity).SetPosition(vec3(30.f, -10.f, 2.f));
+
+		auto& tempSpr = ECS::GetComponent<Sprite>(entity);
+		auto& tempPhsBody = ECS::GetComponent<PhysicsBody>(entity);
+
+		float shrinkX = 0.f;
+		float shrinkY = 0.f;
+		b2Body* tempBody;
+		b2BodyDef tempDef;
+		tempDef.type = b2_staticBody;
+		tempDef.position.Set(float32(200.f), float32(-10.f));
+
+		tempBody = m_physicsWorld->CreateBody(&tempDef);
+
+		tempPhsBody = PhysicsBody(tempBody, float(tempSpr.GetWidth() - shrinkX), float(tempSpr.GetHeight() - shrinkY), vec2(0.f, 0.f), false);
+	}
+	
 	//Set up static box
 	{
 		//Creates entity
@@ -93,9 +167,9 @@ void AnimationSpritePlayground::InitScene(float windowWidth, float windowHeight)
 		ECS::AttachComponent<PhysicsBody>(entity);
 
 		//Sets up components
-		std::string fileName = "boxSprite.jpg";
-		ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 2000, 20);
-		ECS::GetComponent<Transform>(entity).SetPosition(vec3(30.f, -20.f, 2.f));
+		std::string fileName = "floor.jpg";
+		ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 840, 20);
+		ECS::GetComponent<Transform>(entity).SetPosition(vec3(-10.f, -10.f, 2.f));
 
 		auto& tempSpr = ECS::GetComponent<Sprite>(entity);
 		auto& tempPhsBody = ECS::GetComponent<PhysicsBody>(entity);
@@ -105,7 +179,7 @@ void AnimationSpritePlayground::InitScene(float windowWidth, float windowHeight)
 		b2Body* tempBody;
 		b2BodyDef tempDef;
 		tempDef.type = b2_staticBody;
-		tempDef.position.Set(float32(30.f), float32(-20.f));
+		tempDef.position.Set(float32(-50.f), float32(-10.f));
 
 		tempBody = m_physicsWorld->CreateBody(&tempDef);
 
@@ -140,7 +214,7 @@ void AnimationSpritePlayground::InitScene(float windowWidth, float windowHeight)
 		b2Body* tempBody;
 		b2BodyDef tempDef;
 		tempDef.type = b2_dynamicBody;
-		tempDef.position.Set(float32(0.f), float32(30.f));
+		tempDef.position.Set(float32(-100.f), float32(20.f));
 
 		tempBody = m_physicsWorld->CreateBody(&tempDef);
 
