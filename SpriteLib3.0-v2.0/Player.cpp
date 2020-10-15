@@ -35,45 +35,30 @@ void Player::InitPlayer(std::string& fileName, std::string& animationJSON, int w
 
 	//IDLE ANIMATIONS\\
 
+	//NEED TO ADD MORE ANIMATIONS TO crabRow.json
+
 	//Idle Left
-	m_animController->AddAnimation(animations["IdleLeft"].get <Animation>());
+	m_animController->AddAnimation(animations["FormattedCrabRow"].get <Animation>());
 	//Idle Right
-	m_animController->AddAnimation(animations["IdleRight"].get<Animation>());
-	
+	m_animController->AddAnimation(animations["FormattedCrabRow"].get<Animation>());
 	
 	//Idle Up
-	m_animController->AddAnimation(animations["IdleUp"].get<Animation>());
+	m_animController->AddAnimation(animations["FormattedCrabRow"].get<Animation>());
 	//Idle Down
-	m_animController->AddAnimation(animations["IdleDown"].get<Animation>());
+	m_animController->AddAnimation(animations["FormattedCrabRow"].get<Animation>());
 	
-
 	//WALK ANIMATIONS\\
 
 	//Walk left
-	m_animController->AddAnimation(animations["WalkLeft"].get<Animation>());
+	m_animController->AddAnimation(animations["FormattedCrabRow"].get<Animation>());
 	//Walk Right
-	m_animController->AddAnimation(animations["WalkRight"].get<Animation>());
+	m_animController->AddAnimation(animations["FormattedCrabRow"].get<Animation>());
 	
 	//Walk Up
-	m_animController->AddAnimation(animations["WalkUp"].get<Animation>());
+	m_animController->AddAnimation(animations["FormattedCrabRow"].get<Animation>());
 	//Walk Down
-	m_animController->AddAnimation(animations["WalkDown"].get<Animation>());
-	
+	m_animController->AddAnimation(animations["FormattedCrabRow"].get<Animation>());
 
-
-	//ATTACK ANIMATIONS\\
-
-	//Attack Left
-	m_animController->AddAnimation(animations["AttackLeft"].get<Animation>());
-	//Attack Right
-	m_animController->AddAnimation(animations["AttackRight"].get<Animation>());
-
-	
-	//Attack Up
-	m_animController->AddAnimation(animations["AttackUp"].get<Animation>());
-	//Attack Down
-	m_animController->AddAnimation(animations["AttackDown"].get<Animation>());
-	
 
 
 	//Set Default Animation
@@ -183,24 +168,7 @@ void Player::AnimationUpdate()
 		//Puts it into the WALK category
 		activeAnimation = WALK;
 	}
-	else if (m_attacking)
-	{
-		activeAnimation = ATTACK;
 
-		//Check if the attack animation is done
-		if (m_animController->GetAnimation(m_animController->GetActiveAnim()).GetAnimationDone())
-		{
-			//Will auto set to idle
-			m_locked = false;
-			m_attacking = false;
-
-			//Resets the attack animation
-			m_animController->GetAnimation(m_animController->GetActiveAnim()).Reset();
-
-			activeAnimation = IDLE;
-
-		}
-	}
 	else
 	{
 		activeAnimation = IDLE;

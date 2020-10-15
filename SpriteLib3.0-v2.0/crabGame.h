@@ -2,10 +2,10 @@
 
 #include "Scene.h"
 
-class AnimationSpritePlayground : public Scene
+class crabGame : public Scene
 {
 public:
-	AnimationSpritePlayground(std::string name);
+	crabGame(std::string name);
 
 	void InitScene(float windowWidth, float windowHeight) override;
 
