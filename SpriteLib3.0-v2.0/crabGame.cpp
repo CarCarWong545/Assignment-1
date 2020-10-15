@@ -232,7 +232,7 @@ void crabGame::InitScene(float windowWidth, float windowHeight)
 
 
 
-	//Set up Link
+	//Set up player crab
 	{
 		auto entity = ECS::CreateEntity();
 		ECS::SetIsMainPlayer(entity, true);
@@ -244,10 +244,12 @@ void crabGame::InitScene(float windowWidth, float windowHeight)
 		ECS::AttachComponent<PhysicsBody>(entity);
 
 		//Set up components
-		std::string fileName = "spritesheets/index.png";
-		std::string animations = "crabRow.json"; //PROBLEM AREA the json for our sprites breaks the Json.hpp
+		std::string fileName = "spritesheets/128Crab.png";
+		std::string animations = "Crab128.json"; 
+		float plrSize = 64; //Keep in increments of 16
 
-		ECS::GetComponent<Player>(entity).InitPlayer(fileName, animations, 16, 16, &ECS::GetComponent<Sprite>(entity), &ECS::GetComponent<AnimationController>(entity), &ECS::GetComponent<Transform>(entity), true, &ECS::GetComponent<PhysicsBody>(entity));
+
+		ECS::GetComponent<Player>(entity).InitPlayer(fileName, animations, plrSize, plrSize, &ECS::GetComponent<Sprite>(entity), &ECS::GetComponent<AnimationController>(entity), &ECS::GetComponent<Transform>(entity), true, &ECS::GetComponent<PhysicsBody>(entity));
 
 		ECS::GetComponent<Transform>(entity).SetPosition(vec3(0.f, 0.f, 2.f));
 
@@ -275,6 +277,8 @@ void crabGame::InitScene(float windowWidth, float windowHeight)
 
 }
 
+
+
 void crabGame::Update()
 {
 	auto& player = ECS::GetComponent<Player>(MainEntities::MainPlayer());
@@ -282,37 +286,10 @@ void crabGame::Update()
 	player.Update();
 }
 
+
 void crabGame::KeyboardHold()
 {
-	/*auto& player = ECS::GetComponent<PhysicsBody>(MainEntities::MainPlayer());
-	float speed = 60.f;
-	b2Vec2 vel = b2Vec2(0.f, 0.f);
 
-	if (Input::GetKey(Key::Shift))
-	{
-		speed *= 2.f;
-	}
-
-	if (Input::GetKey(Key::W))
-	{
-		vel += b2Vec2(0.f, 1.f);
-	}
-	if (Input::GetKey(Key::S))
-	{
-		vel += b2Vec2(0.f, -1.f);
-	}
-
-	if (Input::GetKey(Key::A))
-	{
-		vel += b2Vec2(-1.f, 0.f);
-	}
-	if (Input::GetKey(Key::D))
-	{
-		vel += b2Vec2(1.f, 0.f);
-	}
-
-	b2Vec2 newVe1 = b2Vec2(speed * vel.x, player.GetBody()->GetLinearVelocity().y);
-	player.GetBody()->SetLinearVelocity(speed * vel);*/
 }
 
 void crabGame::KeyboardDown()

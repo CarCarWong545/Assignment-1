@@ -38,26 +38,26 @@ void Player::InitPlayer(std::string& fileName, std::string& animationJSON, int w
 	//NEED TO ADD MORE ANIMATIONS TO crabRow.json
 
 	//Idle Left
-	m_animController->AddAnimation(animations["FormattedCrabRow"].get <Animation>());
+	m_animController->AddAnimation(animations["Still"].get <Animation>());
 	//Idle Right
-	m_animController->AddAnimation(animations["FormattedCrabRow"].get<Animation>());
+	m_animController->AddAnimation(animations["Still"].get<Animation>());
 	
 	//Idle Up
-	m_animController->AddAnimation(animations["FormattedCrabRow"].get<Animation>());
+	m_animController->AddAnimation(animations["Still"].get<Animation>());
 	//Idle Down
-	m_animController->AddAnimation(animations["FormattedCrabRow"].get<Animation>());
+	m_animController->AddAnimation(animations["Still"].get<Animation>());
 	
 	//WALK ANIMATIONS\\
 
 	//Walk left
-	m_animController->AddAnimation(animations["FormattedCrabRow"].get<Animation>());
+	m_animController->AddAnimation(animations["Move"].get<Animation>());
 	//Walk Right
-	m_animController->AddAnimation(animations["FormattedCrabRow"].get<Animation>());
+	m_animController->AddAnimation(animations["Move"].get<Animation>());
 	
 	//Walk Up
-	m_animController->AddAnimation(animations["FormattedCrabRow"].get<Animation>());
+	m_animController->AddAnimation(animations["Move"].get<Animation>());
 	//Walk Down
-	m_animController->AddAnimation(animations["FormattedCrabRow"].get<Animation>());
+	m_animController->AddAnimation(animations["Move"].get<Animation>());
 
 
 
@@ -65,20 +65,26 @@ void Player::InitPlayer(std::string& fileName, std::string& animationJSON, int w
 	m_animController->SetActiveAnim(IDLELEFT);
 }
 
+
 void Player::Update()
 {
 	if (!m_locked)
 	{
 		MovementUpdate();
+
 	}
 	
 	AnimationUpdate();
 }
 
+
+
 void Player::MovementUpdate()
 {
 
 	m_moving = false;
+	float jumpPower = 4.0;
+	
 
 	if (m_hasPhysics)
 	{
@@ -92,9 +98,9 @@ void Player::MovementUpdate()
 
 		if (Input::GetKey(Key::W))
 		{
-			vel = vel + vec3(0.f, 1.f, 0.f);
-			m_facing = UP;
-			m_moving = true;
+				vel = vel + vec3(0.f, 1.f * (jumpPower), 0.f);
+				m_facing = UP;
+				m_moving = true;
 		}
 		if (Input::GetKey(Key::S))
 		{
