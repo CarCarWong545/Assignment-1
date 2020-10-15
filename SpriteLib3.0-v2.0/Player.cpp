@@ -38,14 +38,14 @@ void Player::InitPlayer(std::string& fileName, std::string& animationJSON, int w
 	//NEED TO ADD MORE ANIMATIONS TO crabRow.json
 
 	//Idle Left
-	m_animController->AddAnimation(animations["Still"].get <Animation>());
+	m_animController->AddAnimation(animations["LStill"].get <Animation>());
 	//Idle Right
-	m_animController->AddAnimation(animations["Still"].get<Animation>());
+	m_animController->AddAnimation(animations["RStill"].get<Animation>());
 	
 	//Idle Up
-	m_animController->AddAnimation(animations["Still"].get<Animation>());
+	m_animController->AddAnimation(animations["Fall"].get<Animation>());
 	//Idle Down
-	m_animController->AddAnimation(animations["Still"].get<Animation>());
+	m_animController->AddAnimation(animations["Clamp"].get<Animation>());
 	
 	//WALK ANIMATIONS\\
 
@@ -55,9 +55,9 @@ void Player::InitPlayer(std::string& fileName, std::string& animationJSON, int w
 	m_animController->AddAnimation(animations["Move"].get<Animation>());
 	
 	//Walk Up
-	m_animController->AddAnimation(animations["Move"].get<Animation>());
+	m_animController->AddAnimation(animations["Jump"].get<Animation>());
 	//Walk Down
-	m_animController->AddAnimation(animations["Move"].get<Animation>());
+	m_animController->AddAnimation(animations["Clamp"].get<Animation>());
 
 
 
@@ -104,9 +104,9 @@ void Player::MovementUpdate()
 		}
 		if (Input::GetKey(Key::S))
 		{
-			vel = vel + vec3(0.f, -1.f,0.f);
+			vel = vel + vec3(0.f, 0.f,0.f); // No movement as you can't walk down in air
 			m_facing = DOWN;
-			m_moving = true;
+			m_moving = true; //True arms go up, false still plays
 		}
 
 		if (Input::GetKey(Key::A))
@@ -142,11 +142,11 @@ void Player::MovementUpdate()
 			m_moving = true;
 		}
 
-		if (Input::GetKey(Key::S))
+		if (Input::GetKey(Key::S)) // No movement as you can't walk down in air
 		{
 			m_transform->SetPositionY(m_transform->GetPositionY() - (speed * Timer::deltaTime));
 			m_facing = DOWN;
-			m_moving = true;
+			m_moving = true; //True arms go up, false still plays
 		}
 
 		if (Input::GetKey(Key::A))

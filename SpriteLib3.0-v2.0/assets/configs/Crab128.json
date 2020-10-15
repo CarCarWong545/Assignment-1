@@ -8,16 +8,54 @@
     "Frame5": [ 720.0, 143.0, 863.0, 0.0 ],
     "Frame6": [ 864.0, 143.0, 1007.0, 0.0 ],
     "Frame7": [ 1008.0, 143.0, 1151.0, 0.0 ],
-
     "NumFrames": 8,
     "Repeating": true,
     "SecsPerFrame": 0.15
   },
+
   "Still": {
     "Frame0": [ 0.0, 143.0, 143.0, 0.0 ],
 
     "NumFrames": 1,
     "Repeating": true,
     "SecsPerFrame": 0.15
+  },
+
+  "LStill": {
+    "Frame0": [ 432.0, 143.0, 575.0, 0.0 ],
+
+    "NumFrames": 1,
+    "Repeating": true,
+    "SecsPerFrame": 0.15
+  },
+
+  "RStill": {
+    "Frame0": [ 1008.0, 143.0, 1151.0, 0.0 ],
+
+    "NumFrames": 1,
+    "Repeating": true,
+    "SecsPerFrame": 0.15
+  },
+
+  "Jump": {
+    "Frame0": [ 1152.0, 143.0, 1296.0, 0.0 ],
+    "NumFrames": 1,
+    "Repeating": true,
+    "SecsPerFrame": 0.15
+  },
+
+  "Fall": {
+    "Frame0": [ 1296.0, 143.0, 1440.0, 0.0 ],
+    "NumFrames": 1,
+    "Repeating": true,
+    "SecsPerFrame": 0.15
+  },
+
+  "Clamp": {
+    "Frame0": [ 1440.0, 143.0, 1584.0, 0.0 ],
+    "NumFrames": 1,
+    "Repeating": true,
+    "SecsPerFrame": 0.15
   }
+
 }
