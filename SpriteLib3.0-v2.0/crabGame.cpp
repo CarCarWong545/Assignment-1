@@ -25,7 +25,7 @@ O - Shows time & position (Terminal)
 -Create .exe
 -Provide files & github/gitkraken repo
 
-Caroyln Wong() - Player movement, background & foreground sprites, bounding box, scene,
+Caroyln Wong(100781520) - Player movement, background & foreground sprites, bounding box, scene,
 Jaden Hepburn(100791169) - Win objective, player sprites & animations, cleaning/formatting, Timer & Position show,    
 */
 
