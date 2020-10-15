@@ -9,19 +9,34 @@ S - Squat (No functionality)
 D - Move Right
 Shift - Run
 
-T - Clear terminal
+L - Clear terminal
+P - Toggles boxes (Prebuilt???)
+O - Shows time & position (Terminal) 
 
 
-Caroyln Wong() - Scene, player movement, background sprite, foreground sprite, 3/4 bounding box 
-Jaden Hepburn() - Win objective, player sprites, sprite animations, 1/4 bounding box  
+////TODO LIST////
+- Speed graph 2
+- Gui toggle for both speed graphs (Were we taught guis???)
+[optionals]
+-Moving platforms
+-Moving enemy
+[Finalize]
+-Video explanation
+-Create .exe
+-Provide files & github/gitkraken repo
+
+Caroyln Wong() - Player movement, background & foreground sprites, bounding box, scene,
+Jaden Hepburn(100791169) - Win objective, player sprites & animations, cleaning/formatting, Timer & Position show,    
 */
 
 #include "crabGame.h"
 #include "Utilities.h"
 #include <iostream> 
 
-
 using namespace std; // Tired of doing :: for everthing printing related
+
+
+
 
 crabGame::crabGame(std::string name)
 	:Scene(name)
@@ -40,6 +55,8 @@ void crabGame::InitScene(float windowWidth, float windowHeight)
 
 	float aspectRatio = (windowWidth / windowHeight);
 
+
+	/////////////////////////Visual information/////////////////////////
 	//Setup main camera entity
 	{
 		//Creates camera
@@ -62,6 +79,18 @@ void crabGame::InitScene(float windowWidth, float windowHeight)
 		ECS::GetComponent<VerticalScroll>(entity).SetCam(&ECS::GetComponent<Camera>(entity));
 	}
 
+	//User interface attempt (Failed, i'm completely clueless how this works)
+	{
+		auto entity = ECS::CreateEntity();
+
+		ECS::AttachComponent<UI>(entity);
+		ECS::GetComponent<UI>(entity).InitImGUI();
+		ECS::GetComponent<UI>(entity).Start(windowWidth,windowHeight);
+		ECS::GetComponent<UI>(entity).m_isInit = true;
+		ECS::GetComponent<UI>(entity).End();
+	}
+
+	/////////////////////////Objects Implementation/////////////////////////
 	//Set up win objective crabs
 	{
 		//Kin 1
@@ -126,7 +155,7 @@ void crabGame::InitScene(float windowWidth, float windowHeight)
 		}
 	}
 
-	// Set up dynamic box
+	//Box
 	/* 
 	{
 		//Creates entity
@@ -298,49 +327,48 @@ void crabGame::InitScene(float windowWidth, float windowHeight)
 			tempPhsBody = PhysicsBody(tempBody, float(tempSpr.GetWidth() - shrinkX), float(tempSpr.GetHeight() - shrinkY), vec2(0.f, 0.f), false);
 		}
 	}
-	/////////////////////////////////////////////////////////////////
-
 	
 
-
-	//Set up player crab
+	/////////////////////////Player Implementation/////////////////////////
 	{
-		auto entity = ECS::CreateEntity();
-		ECS::SetIsMainPlayer(entity, true);
+		{
+			auto entity = ECS::CreateEntity();
+			ECS::SetIsMainPlayer(entity, true);
 
-		ECS::AttachComponent<Player>(entity);
-		ECS::AttachComponent<Sprite>(entity);
-		ECS::AttachComponent<Transform>(entity);
-		ECS::AttachComponent<AnimationController>(entity);
-		ECS::AttachComponent<PhysicsBody>(entity);
+			ECS::AttachComponent<Player>(entity);
+			ECS::AttachComponent<Sprite>(entity);
+			ECS::AttachComponent<Transform>(entity);
+			ECS::AttachComponent<AnimationController>(entity);
+			ECS::AttachComponent<PhysicsBody>(entity);
 
-		//Set up components
-		std::string fileName = "spritesheets/128Crab.png";
-		std::string animations = "Crab128.json"; 
-		float plrSize = 40; //40 default, 32 & 64 nice numbers
+			//Set up components
+			std::string fileName = "spritesheets/128Crab.png";
+			std::string animations = "Crab128.json";
+			float plrSize = 40; //40 default, 32 & 64 nice numbers
 
-		ECS::GetComponent<Player>(entity).InitPlayer(fileName, animations, plrSize, plrSize, &ECS::GetComponent<Sprite>(entity), &ECS::GetComponent<AnimationController>(entity), &ECS::GetComponent<Transform>(entity), true, &ECS::GetComponent<PhysicsBody>(entity));
+			ECS::GetComponent<Player>(entity).InitPlayer(fileName, animations, plrSize, plrSize, &ECS::GetComponent<Sprite>(entity), &ECS::GetComponent<AnimationController>(entity), &ECS::GetComponent<Transform>(entity), true, &ECS::GetComponent<PhysicsBody>(entity));
 
-		ECS::GetComponent<Transform>(entity).SetPosition(vec3(0.f, 0.f, 2.f));
+			ECS::GetComponent<Transform>(entity).SetPosition(vec3(0.f, 0.f, 2.f));
 
 
-		auto& tempSpr = ECS::GetComponent<Sprite>(entity);
-		auto& tempPhsBody = ECS::GetComponent<PhysicsBody>(entity);
+			auto& tempSpr = ECS::GetComponent<Sprite>(entity);
+			auto& tempPhsBody = ECS::GetComponent<PhysicsBody>(entity);
 
-		float shrinkX = 0.f;
-		float shrinkY = 0.f;
+			float shrinkX = 0.f;
+			float shrinkY = 0.f;
 
-		b2Body* tempBody;
-		b2BodyDef tempDef;
-		tempDef.type = b2_dynamicBody;
-		tempDef.position.Set(float32(-100.f), float32(20.f)); //SETS PLAYER POSITION on initialisation
+			b2Body* tempBody;
+			b2BodyDef tempDef;
+			tempDef.type = b2_dynamicBody;
+			tempDef.position.Set(float32(-100.f), float32(20.f)); //SETS PLAYER POSITION on initialisation
 
-		tempBody = m_physicsWorld->CreateBody(&tempDef);
+			tempBody = m_physicsWorld->CreateBody(&tempDef);
 
-		tempPhsBody = PhysicsBody(tempBody, float(tempSpr.GetWidth() - shrinkX), float(tempSpr.GetHeight() - shrinkY), vec2(0.f, 0.f), false);
+			tempPhsBody = PhysicsBody(tempBody, float(tempSpr.GetWidth() - shrinkX), float(tempSpr.GetHeight() - shrinkY), vec2(0.f, 0.f), false);
 
-		ECS::GetComponent<PhysicsBody>(MainEntities::MainPlayer()).GetBody()->SetFixedRotation(true);
+			ECS::GetComponent<PhysicsBody>(MainEntities::MainPlayer()).GetBody()->SetFixedRotation(true);
 
+		}
 	}
 
 	ECS::GetComponent<HorizontalScroll>(MainEntities::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(MainEntities::MainPlayer()));
@@ -358,10 +386,10 @@ void crabGame::Update()
 	Scene::AdjustScrollOffset();
 	player.Update();
 
-	//WIN CONDITION
-	if (plr.GetPositionX() >= 100 && plr.GetPositionY() <= 35)
+	//WIN CONDITION area (need a better way to display)
+	if (plr.GetPositionX() >= 100 && plr.GetPositionY() <= 35 && plr.GetPositionX() <= 200 && plr.GetPositionY() >= -35)
 	{
-		cout << "WIN CONDITION" << endl;	
+		cout << "WIN CONDITION REACHED" << endl;	
 	}
 
 }
@@ -371,26 +399,30 @@ void crabGame::KeyboardHold()
 {
 	auto& plr = ECS::GetComponent<Transform>(MainEntities::MainPlayer());
 
-	if (Input::GetKey(Key::E))
+	/*if (Input::GetKey(Key::P)) // Shows position
 	{
 		
 		cout << "("<<plr.GetPositionX()<<","<<plr.GetPositionY()<<")"<<endl;
-	}
+	}*/
 
-	if (Input::GetKey(Key::T))
+	if (Input::GetKey(Key::L)) // Clears Terminal
 	{
 
 		system("cls");
 	}
+
+	if (Input::GetKey(Key::O)) //Displays timer and position
+	{
+		cout << "Time: " << Timer::time << "\n"
+			<<"Position: " << "(" << plr.GetPositionX() << "," << plr.GetPositionY() << ")" 
+			<<"\n//////////////////////////////" <<endl;
+	}
+
 }
 
 void crabGame::KeyboardDown()
 {
 	
-
-
-
-
 }
 
 void crabGame::KeyboardUp()
