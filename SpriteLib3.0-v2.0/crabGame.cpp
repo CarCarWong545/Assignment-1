@@ -35,9 +35,6 @@ Jaden Hepburn(100791169) - Win objective, player sprites & animations, cleaning/
 
 using namespace std; // Tired of doing :: for everthing printing related
 
-
-
-
 crabGame::crabGame(std::string name)
 	:Scene(name)
 {
@@ -62,6 +59,7 @@ void crabGame::InitScene(float windowWidth, float windowHeight)
 		//Creates camera
 		auto entity = ECS::CreateEntity();
 		ECS::SetIsMainCamera(entity, true);
+		float m_offset = 0.5f;
 
 		//Creates new orthographic camera
 		ECS::AttachComponent<Camera>(entity);
@@ -153,7 +151,35 @@ void crabGame::InitScene(float windowWidth, float windowHeight)
 			//	ECS::GetComponent<Sprite>(entity).SetTransparency(0.8f);
 			ECS::GetComponent<Transform>(entity).SetPosition(vec3(180.f, 8.f, 10.f));
 		}
+
+		//Set up start instructions
+		{
+			
+			auto entity = ECS::CreateEntity();
+
+			ECS::AttachComponent<Sprite>(entity);
+			ECS::AttachComponent<Transform>(entity);
+
+			std::string fileName = "start.png";
+			ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 100, 20);
+			//ECS::GetComponent<Sprite>(entity).SetTransparency(1.f);
+			ECS::GetComponent<Transform>(entity).SetPosition(vec3(-400.f, 30.f, 10.f));
+		}
+
+		{
+			auto entity = ECS::CreateEntity();
+
+			ECS::AttachComponent<Sprite>(entity);
+			ECS::AttachComponent<Transform>(entity);
+
+			std::string fileName = "won.png";
+			ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 100, 20);
+			ECS::GetComponent<Sprite>(entity).SetTransparency(1.f);
+			ECS::GetComponent<Transform>(entity).SetPosition(vec3(150.f, 30.f, 10.f));
+		}
 	}
+
+	
 
 	//Box
 	/* 
@@ -201,10 +227,10 @@ void crabGame::InitScene(float windowWidth, float windowHeight)
 			ECS::AttachComponent<Transform>(entity);
 
 			//Set up component
-			float backgroundScale = 1; // Scales background, default 1 [N]
-			std::string fileName = "Background.jpg";
-			ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 426 * backgroundScale, 240 * backgroundScale);
-			ECS::GetComponent<Transform>(entity).SetPosition(vec3(30.f, 40.f, 0.f));
+			float backgroundScale = 1.30; // Scales background, default 1 [N]
+			std::string fileName = "Background2.jpg";
+			ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 700 * backgroundScale, 400 * backgroundScale);
+			ECS::GetComponent<Transform>(entity).SetPosition(vec3(-150.f, 40.f, 0.f));
 		}
 
 		//Set up barrier on left
@@ -217,7 +243,7 @@ void crabGame::InitScene(float windowWidth, float windowHeight)
 			ECS::AttachComponent<PhysicsBody>(entity);
 
 			//Set up components
-			std::string fileName = "floor.jpg";
+			std::string fileName = "barrier.png";
 			ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 20, 426);
 			ECS::GetComponent<Transform>(entity).SetPosition(vec3(30.f, -10.f, 2.f));
 
@@ -229,7 +255,7 @@ void crabGame::InitScene(float windowWidth, float windowHeight)
 			b2Body* tempBody;
 			b2BodyDef tempDef;
 			tempDef.type = b2_staticBody;
-			tempDef.position.Set(float32(-175.f), float32(-10.f));
+			tempDef.position.Set(float32(-500.f), float32(-10.f));
 
 			tempBody = m_physicsWorld->CreateBody(&tempDef);
 
@@ -246,7 +272,7 @@ void crabGame::InitScene(float windowWidth, float windowHeight)
 			ECS::AttachComponent<PhysicsBody>(entity);
 
 			//Set up components
-			std::string fileName = "floor.jpg";
+			std::string fileName = "barrier.png";
 			ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 20, 426);
 			ECS::GetComponent<Transform>(entity).SetPosition(vec3(30.f, -10.f, 2.f));
 
@@ -276,8 +302,8 @@ void crabGame::InitScene(float windowWidth, float windowHeight)
 			ECS::AttachComponent<PhysicsBody>(entity);
 
 			//Sets up components
-			std::string fileName = "floor.jpg";
-			ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 840, 20);
+			std::string fileName = "barrier.png";
+			ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 1250, 20);
 			ECS::GetComponent<Transform>(entity).SetPosition(vec3(-10.f, -10.f, 2.f));
 
 
@@ -308,7 +334,7 @@ void crabGame::InitScene(float windowWidth, float windowHeight)
 			ECS::AttachComponent<PhysicsBody>(entity);
 
 			//Sets up components
-			std::string fileName = "roof.jpg";
+			std::string fileName = "barrier.png";
 			ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 840, 100);
 			ECS::GetComponent<Transform>(entity).SetPosition(vec3(-10.f, -10.f, 2.f));
 
@@ -321,6 +347,115 @@ void crabGame::InitScene(float windowWidth, float windowHeight)
 			b2BodyDef tempDef;
 			tempDef.type = b2_staticBody;
 			tempDef.position.Set(float32(-50.f), float32(210.f));
+
+			tempBody = m_physicsWorld->CreateBody(&tempDef);
+
+			tempPhsBody = PhysicsBody(tempBody, float(tempSpr.GetWidth() - shrinkX), float(tempSpr.GetHeight() - shrinkY), vec2(0.f, 0.f), false);
+		}
+
+		//Barrier
+		{
+			auto entity = ECS::CreateEntity();
+
+			ECS::AttachComponent<Sprite>(entity);
+			ECS::AttachComponent<Transform>(entity);
+			ECS::AttachComponent<PhysicsBody>(entity);
+
+			std::string fileName = "planktall.jpg";
+			ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 10, 100);
+			ECS::GetComponent<Transform>(entity).SetPosition(vec3(-10.f, -10.f, 2.f));
+
+			auto& tempSpr = ECS::GetComponent<Sprite>(entity);
+			auto& tempPhsBody = ECS::GetComponent<PhysicsBody>(entity);
+
+			float shrinkX = 0.f;
+			float shrinkY = 0.f;
+			b2Body* tempBody;
+			b2BodyDef tempDef;
+			tempDef.type = b2_staticBody;
+			tempDef.position.Set(float32(90.f), float32(50));
+
+			tempBody = m_physicsWorld->CreateBody(&tempDef);
+
+			tempPhsBody = PhysicsBody(tempBody, float(tempSpr.GetWidth() - shrinkX), float(tempSpr.GetHeight() - shrinkY), vec2(0.f, 0.f), false);
+		}
+
+		//Platform 1
+		{
+			auto entity = ECS::CreateEntity();
+
+			ECS::AttachComponent<Sprite>(entity);
+			ECS::AttachComponent<Transform>(entity);
+			ECS::AttachComponent<PhysicsBody>(entity);
+
+			std::string fileName = "plankwide.jpg";
+			ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 50, 10);
+			ECS::GetComponent<Transform>(entity).SetPosition(vec3(-10.f, -10.f, 2.f));
+
+			auto& tempSpr = ECS::GetComponent<Sprite>(entity);
+			auto& tempPhsBody = ECS::GetComponent<PhysicsBody>(entity);
+
+			float shrinkX = 0.f;
+			float shrinkY = 0.f;
+			b2Body* tempBody;
+			b2BodyDef tempDef;
+			tempDef.type = b2_staticBody;
+			tempDef.position.Set(float32(-110.f), float32(20));
+
+			tempBody = m_physicsWorld->CreateBody(&tempDef);
+
+			tempPhsBody = PhysicsBody(tempBody, float(tempSpr.GetWidth() - shrinkX), float(tempSpr.GetHeight() - shrinkY), vec2(0.f, 0.f), false);
+		}
+
+
+		//Platform 2
+		{
+			auto entity = ECS::CreateEntity();
+
+			ECS::AttachComponent<Sprite>(entity);
+			ECS::AttachComponent<Transform>(entity);
+			ECS::AttachComponent<PhysicsBody>(entity);
+
+			std::string fileName = "plankwide.jpg";
+			ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 50, 10);
+			ECS::GetComponent<Transform>(entity).SetPosition(vec3(-10.f, -10.f, 2.f));
+
+			auto& tempSpr = ECS::GetComponent<Sprite>(entity);
+			auto& tempPhsBody = ECS::GetComponent<PhysicsBody>(entity);
+
+			float shrinkX = 0.f;
+			float shrinkY = 0.f;
+			b2Body* tempBody;
+			b2BodyDef tempDef;
+			tempDef.type = b2_staticBody;
+			tempDef.position.Set(float32(-50.f), float32(50));
+
+			tempBody = m_physicsWorld->CreateBody(&tempDef);
+			
+			tempPhsBody = PhysicsBody(tempBody, float(tempSpr.GetWidth() - shrinkX), float(tempSpr.GetHeight() - shrinkY), vec2(0.f, 0.f), false);
+		}
+
+		//Platform 3
+		{
+			auto entity = ECS::CreateEntity();
+
+			ECS::AttachComponent<Sprite>(entity);
+			ECS::AttachComponent<Transform>(entity);
+			ECS::AttachComponent<PhysicsBody>(entity);
+
+			std::string fileName = "plankwide.jpg";
+			ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 50, 10);
+			ECS::GetComponent<Transform>(entity).SetPosition(vec3(-10.f, -10.f, 2.f));
+
+			auto& tempSpr = ECS::GetComponent<Sprite>(entity);
+			auto& tempPhsBody = ECS::GetComponent<PhysicsBody>(entity);
+
+			float shrinkX = 0.f;
+			float shrinkY = 0.f;
+			b2Body* tempBody;
+			b2BodyDef tempDef;
+			tempDef.type = b2_staticBody;
+			tempDef.position.Set(float32(25.f), float32(80));
 
 			tempBody = m_physicsWorld->CreateBody(&tempDef);
 
@@ -360,7 +495,7 @@ void crabGame::InitScene(float windowWidth, float windowHeight)
 			b2Body* tempBody;
 			b2BodyDef tempDef;
 			tempDef.type = b2_dynamicBody;
-			tempDef.position.Set(float32(-100.f), float32(20.f)); //SETS PLAYER POSITION on initialisation
+			tempDef.position.Set(float32(-450.f), float32(20.f)); //SETS PLAYER POSITION on initialisation
 
 			tempBody = m_physicsWorld->CreateBody(&tempDef);
 
@@ -383,13 +518,13 @@ void crabGame::Update()
 	auto& player = ECS::GetComponent<Player>(MainEntities::MainPlayer());
 	auto& plr = ECS::GetComponent<Transform>(MainEntities::MainPlayer());
 
-	Scene::AdjustScrollOffset();
+	//Scene::AdjustScrollOffset();
 	player.Update();
 
 	//WIN CONDITION area (need a better way to display)
 	if (plr.GetPositionX() >= 100 && plr.GetPositionY() <= 35 && plr.GetPositionX() <= 200 && plr.GetPositionY() >= -35)
 	{
-		cout << "WIN CONDITION REACHED" << endl;	
+		cout << "WIN CONDITION REACHED" << endl;
 	}
 
 }
