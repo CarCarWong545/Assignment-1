@@ -346,7 +346,7 @@ void crabGame::InitScene(float windowWidth, float windowHeight)
 			b2Body* tempBody;
 			b2BodyDef tempDef;
 			tempDef.type = b2_staticBody;
-			tempDef.position.Set(float32(-50.f), float32(210.f));
+			tempDef.position.Set(float32(-50.f), float32(290.f));
 
 			tempBody = m_physicsWorld->CreateBody(&tempDef);
 
