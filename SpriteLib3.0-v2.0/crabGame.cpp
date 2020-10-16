@@ -163,9 +163,23 @@ void crabGame::InitScene(float windowWidth, float windowHeight)
 			std::string fileName = "start.png";
 			ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 100, 20);
 			//ECS::GetComponent<Sprite>(entity).SetTransparency(1.f);
-			ECS::GetComponent<Transform>(entity).SetPosition(vec3(-400.f, 30.f, 10.f));
+			ECS::GetComponent<Transform>(entity).SetPosition(vec3(-400.f, 50.f, 10.f));
 		}
 
+		//Controls
+		{
+			auto entity = ECS::CreateEntity();
+
+			ECS::AttachComponent<Sprite>(entity);
+			ECS::AttachComponent<Transform>(entity);
+
+			std::string fileName = "Controls.png";
+			ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 75, 75);
+			//ECS::GetComponent<Sprite>(entity).SetTransparency(1.f);
+			ECS::GetComponent<Transform>(entity).SetPosition(vec3(-520.f, 30.f, 10.f));
+		}
+
+		// win message
 		{
 			auto entity = ECS::CreateEntity();
 
