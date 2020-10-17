@@ -1,4 +1,7 @@
 #include "Player.h"
+#include <iostream>
+
+using namespace std;
 
 Player::Player()
 {
@@ -78,12 +81,14 @@ void Player::Update()
 }
 
 
+float x = 1.f;
 
 void Player::MovementUpdate()
 {
 
 	m_moving = false;
 	float jumpPower = 4.0;
+	
 	
 
 	if (m_hasPhysics)
@@ -94,6 +99,28 @@ void Player::MovementUpdate()
 		if (Input::GetKey(Key::Shift))
 		{
 			speed *= 7.f;
+			cout << speed << endl;
+		}
+		
+		if (Input::GetKey(Key::LeftControl))
+		{
+			if (speed < 100)
+			{
+				speed = pow(50, x);
+				x += 0.01;
+			}
+			
+			cout << speed << endl;
+
+			/*while (x > 0 && x < 3 && speed <= 100)
+			{
+				
+			}*/
+
+		}
+		else
+		{
+			x = 1.f;
 		}
 
 		if (Input::GetKey(Key::W))
