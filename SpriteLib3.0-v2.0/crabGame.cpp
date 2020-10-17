@@ -8,6 +8,7 @@ A - Move left
 S - Squat (No functionality)
 D - Move Right
 Shift - Run
+Ctrl - Accelerate
 
 L - Clear terminal
 P - Toggles boxes (Prebuilt???)
@@ -25,8 +26,8 @@ O - Shows time & position (Terminal)
 -Create .exe
 -Provide files & github/gitkraken repo
 
-Caroyln Wong(100781520) - Player movement, background & foreground sprites, bounding box, scene,
-Jaden Hepburn(100791169) - Win objective, player sprites & animations, cleaning/formatting, Timer & Position show,    
+Caroyln Wong(100781520) - Player movement, background & foreground sprites, bounding box, scene, platforms
+Jaden Hepburn(100791169) - Win objective, player sprites & animations, cleaning/formatting, Timer & Position show
 */
 
 #include "crabGame.h"
@@ -38,7 +39,7 @@ using namespace std; // Tired of doing :: for everthing printing related
 crabGame::crabGame(std::string name)
 	:Scene(name)
 {
-	//no gravity this is a top down scene
+	//Side scroller
 	m_gravity = b2Vec2(0.f, -2000.f); // Default is 0.f,-1000.f
 	m_physicsWorld->SetGravity(m_gravity);
 }
@@ -77,7 +78,7 @@ void crabGame::InitScene(float windowWidth, float windowHeight)
 		ECS::GetComponent<VerticalScroll>(entity).SetCam(&ECS::GetComponent<Camera>(entity));
 	}
 
-	//User interface attempt (Failed, i'm completely clueless how this works)
+	/*User interface attempt
 	{
 		auto entity = ECS::CreateEntity();
 
@@ -86,7 +87,7 @@ void crabGame::InitScene(float windowWidth, float windowHeight)
 		ECS::GetComponent<UI>(entity).Start(windowWidth,windowHeight);
 		ECS::GetComponent<UI>(entity).m_isInit = true;
 		ECS::GetComponent<UI>(entity).End();
-	}
+	}*/
 
 	/////////////////////////Objects Implementation/////////////////////////
 	//Set up win objective crabs
